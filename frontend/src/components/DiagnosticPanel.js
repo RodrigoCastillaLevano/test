@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+// Misma lógica que en AuthContext
+const getApiUrl = () => {
+  if (window.location.hostname === 'frontend.r-c.lat') {
+    return 'https://backend.r-c.lat';
+  }
+  return process.env.REACT_APP_API_URL || 'http://localhost:3001';
+};
+
+const API_URL = getApiUrl();
+
 const DiagnosticPanel = () => {
   const [testResult, setTestResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -8,8 +18,8 @@ const DiagnosticPanel = () => {
   const testConnection = async () => {
     setLoading(true);
     try {
-      console.log('Testing connection to:', process.env.REACT_APP_API_URL);
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/auth/test`);
+      console.log('Testing connection to:', API_URL);
+      const response = await axios.get(`${API_URL}/api/health`);
       setTestResult({
         success: true,
         data: response.data,
@@ -31,7 +41,7 @@ const DiagnosticPanel = () => {
   const testLogin = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         email: 'admin@demo.com',
         password: 'admin123'
       });
@@ -70,7 +80,9 @@ const DiagnosticPanel = () => {
       fontSize: '12px'
     }}>
       <h4>🔧 Panel de Diagnóstico</h4>
-      <p><strong>API URL:</strong> {process.env.REACT_APP_API_URL}</p>
+      <p><strong>API URL Configurada:</strong> {API_URL}</p>
+      <p><strong>Hostname actual:</strong> {window.location.hostname}</p>
+      <p><strong>Env Variable:</strong> {process.env.REACT_APP_API_URL || 'No definida'}</p>
       
       <div style={{ marginBottom: '10px' }}>
         <button onClick={testConnection} disabled={loading}>
