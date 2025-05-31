@@ -17,6 +17,7 @@ var app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:80",
+  "https://frontend.r-c.lat",
   process.env.FRONTEND_URL,
   process.env.CORS_ORIGIN,
 ].filter(Boolean);
