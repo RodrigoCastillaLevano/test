@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  # Base de datos PostgreSQL
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: sistema_academico
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - dokploy-network
+
+  # Backend API (Express)
+  backend:
+    build: ./backend
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_URL=postgresql://postgres:admin123@db:5432/sistema_academico
+      - JWT_SECRET=jwt_secret_2024_sistema_academico
+      - ADMIN_EMAIL=admin@demo.com
+      - ADMIN_PASSWORD=admin123
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`proyecto-crud.dokploy.app`) && PathPrefix(`/api`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=3001"
+    networks:
+      - dokploy-network
+
+  # Frontend (React + Nginx)
+  frontend:
+    build: ./frontend
+    environment:
+      - REACT_APP_API_URL=https://proyecto-crud.dokploy.app/api
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`proyecto-crud.dokploy.app`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+    networks:
+      - dokploy-network
+
+volumes:
+  postgres_data:
+
+networks:
+  dokploy-network:
+    external: true
