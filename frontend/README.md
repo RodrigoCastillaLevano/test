@@ -1,49 +1,158 @@
-# Getting Started with Create React App
+# 🎨 Frontend - Sistema de Gestión Académica
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicación React para gestión de cursos académicos con interfaz moderna y responsiva.
 
-## Available Scripts
+## 📋 Características
 
-In the project directory, you can run:
+- ✅ **React 18** - Última versión con hooks
+- ✅ **Context API** - Gestión de estado global
+- ✅ **Componentes Modernos** - UI limpia y responsiva
+- ✅ **Autenticación** - Login/logout con JWT
+- ✅ **CRUD Interactivo** - Gestión completa de cursos
+- ✅ **Docker Multi-stage** - Build optimizado para producción
+- ✅ **Nginx** - Servido con configuración optimizada
 
-### `npm start`
+## 🔧 Variables de Entorno
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Copia `.env.example` a `.env` y configura:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```env
+REACT_APP_API_URL=https://your-backend-domain.com/api
+REACT_APP_ENV=production
+REACT_APP_TITLE=Sistema de Gestión Académica
+```
 
-### `npm test`
+## 🚀 Ejecución Local
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+# Instalar dependencias
+npm install
 
-### `npm run build`
+# Ejecutar en desarrollo
+npm start
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Build para producción
+npm run build
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Servir build localmente
+npx serve -s build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🐳 Docker
 
-### `npm run eject`
+```bash
+# Build de la imagen (multi-stage)
+docker build -t frontend-gestion .
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Ejecutar contenedor
+docker run -p 80:80 frontend-gestion
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📱 Componentes Principales
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🔐 Autenticación
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **Login.js** - Formulario de inicio de sesión
+- **AuthContext.js** - Gestión global de autenticación
 
-## Learn More
+### 📚 Gestión de Cursos
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Dashboard.js** - Panel principal
+- **CursosList.js** - Lista y búsqueda de cursos
+- **CursoForm.js** - Formulario crear/editar cursos
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 🎨 Estilos
+
+- **CSS Modules** - Estilos modulares por componente
+- **Responsive Design** - Adaptable a móviles y desktop
+- **UI/UX Moderno** - Interfaz intuitiva y atractiva
+
+## 🔗 Integración con Backend
+
+### API Calls:
+
+```javascript
+// Login
+POST ${API_URL}/auth/login
+
+// Obtener cursos
+GET ${API_URL}/cursos
+
+// Crear curso
+POST ${API_URL}/cursos
+
+// Actualizar curso
+PUT ${API_URL}/cursos/:id
+
+// Eliminar curso
+DELETE ${API_URL}/cursos/:id
+```
+
+## 🎯 Funcionalidades
+
+### ✨ Dashboard Principal
+
+- Lista de cursos con precios en soles
+- Búsqueda y filtrado
+- Acciones rápidas (editar/eliminar)
+
+### ✨ Gestión de Cursos
+
+- Formulario dinámico
+- Validación en tiempo real
+- Retroalimentación visual
+- Manejo de errores
+
+### ✨ Autenticación
+
+- Login persistente
+- Protección de rutas
+- Logout seguro
+- Estados de carga
+
+## 📊 Datos de Ejemplo
+
+El sistema muestra 10 cursos precargados:
+
+- **Fundamentos de Programación** - S/ 850.00
+- **Desarrollo Web** - S/ 950.00
+- **Base de Datos I** - S/ 870.00
+- Y más cursos de Ingeniería de Sistemas...
+
+## 🔧 Desarrollo
+
+### Scripts disponibles:
+
+- `npm start` - Ejecutar en desarrollo (puerto 3000)
+- `npm run build` - Build para producción
+- `npm test` - Ejecutar tests
+- `npm run eject` - Eject configuración CRA
+
+### Estructura del proyecto:
+
+```
+frontend/
+├── src/
+│   ├── components/     # Componentes React
+│   ├── context/        # Context API
+│   ├── App.js         # Componente principal
+│   └── index.js       # Punto de entrada
+├── public/            # Archivos públicos
+├── build/             # Build de producción
+├── Dockerfile         # Multi-stage build
+├── nginx.conf         # Configuración Nginx
+└── package.json       # Dependencias
+```
+
+## 🚀 Deploy en Dokploy
+
+1. **Crear aplicación** tipo `Application`
+2. **Repository**: `https://github.com/RodrigoCastillaLevano/test.git`
+3. **Build Path**: `/frontend`
+4. **Port**: `80`
+5. **Variables**: Configurar `REACT_APP_API_URL`
+
+¡Listo para producción! 🎉
 
 ### Code Splitting
 

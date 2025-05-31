@@ -13,10 +13,26 @@ var authRouter = require("./routes/auth");
 
 var app = express();
 
-// Configuración CORS para desarrollo
+// Configuración CORS para desarrollo y producción
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:80",
+  process.env.FRONTEND_URL,
+  process.env.CORS_ORIGIN,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: function (origin, callback) {
+      // Permitir requests sin origin (mobile apps, etc.)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("No permitido por CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -34,7 +50,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Health check general
 app.get("/api/health", (req, res) => {
   const uptime = process.uptime();
-  const uptimeString = `${Math.floor(uptime / 60)}m ${Math.floor(uptime % 60)}s`;
+  const uptimeString = `${Math.floor(uptime / 60)}m ${Math.floor(
+    uptime % 60
+  )}s`;
 
   res.json({
     status: "OK",

@@ -1,0 +1,27 @@
+{
+  "name": "sistema-gestion-backend",
+  "type": "application",
+  "buildType": "dockerfile",
+  "dockerfile": "./Dockerfile",
+  "buildContext": ".",
+  "port": 3001,
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "3001"
+  },
+  "domains": [
+    {
+      "host": "backend.your-domain.com",
+      "path": "/",
+      "port": 3001,
+      "https": true
+    }
+  ],
+  "healthCheck": {
+    "enabled": true,
+    "path": "/api/health",
+    "port": 3001,
+    "initialDelaySeconds": 30,
+    "periodSeconds": 10
+  }
+}

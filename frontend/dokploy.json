@@ -1,0 +1,26 @@
+{
+  "name": "sistema-gestion-frontend",
+  "type": "application",
+  "buildType": "dockerfile",
+  "dockerfile": "./Dockerfile",
+  "buildContext": ".",
+  "port": 80,
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "domains": [
+    {
+      "host": "app.your-domain.com",
+      "path": "/",
+      "port": 80,
+      "https": true
+    }
+  ],
+  "healthCheck": {
+    "enabled": true,
+    "path": "/",
+    "port": 80,
+    "initialDelaySeconds": 20,
+    "periodSeconds": 30
+  }
+}
