@@ -1,0 +1,43 @@
+{
+  "name": "sistema-academico-backend",
+  "type": "docker",
+  "buildContext": ".",
+  "dockerfile": "Dockerfile",
+  "port": 3001,
+  "healthcheck": {
+    "path": "/api/health",
+    "port": 3001,
+    "interval": "30s",
+    "timeout": "10s",
+    "retries": 3
+  },
+  "environment": [
+    {
+      "key": "NODE_ENV",
+      "value": "production"
+    },
+    {
+      "key": "PORT",
+      "value": "3001"
+    },
+    {
+      "key": "DATABASE_URL",
+      "value": "postgresql://postgres:hivl3wcednpboa6y@137.184.140.170:5432/postgres"
+    },
+    {
+      "key": "JWT_SECRET",
+      "value": "mi_jwt_secret_super_seguro_2024"
+    },
+    {
+      "key": "FRONTEND_URL",
+      "value": "https://sistema-academico-frontend.dokploy.com"
+    }
+  ],
+  "domains": [
+    {
+      "domain": "sistema-academico-api.dokploy.com",
+      "path": "/",
+      "port": 3001
+    }
+  ]
+}

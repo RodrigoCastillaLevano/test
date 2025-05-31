@@ -1,6 +1,10 @@
 # Multi-stage build para React
 FROM node:18-alpine AS build
 
+# Argumentos de build para variables de entorno de React
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
 # Directorio de trabajo
 WORKDIR /usr/src/app
 
