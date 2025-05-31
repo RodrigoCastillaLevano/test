@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
 import CursosList from "./CursosList";
 import CursoForm from "./CursoForm";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState("list");
   const [selectedCurso, setSelectedCurso] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -33,14 +31,11 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <header className="dashboard-header">
-        <div className="header-content">
+      <header className="dashboard-header-container">
+        <div className="dashboard-header">
           <h1>Sistema de Gestión Académica</h1>
           <div className="user-info">
-            <span>Bienvenido: {user?.email}</span>
-            <button onClick={logout} className="logout-btn">
-              Cerrar Sesión
-            </button>
+            <span>Gestión de Cursos</span>
           </div>
         </div>
       </header>

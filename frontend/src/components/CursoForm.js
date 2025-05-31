@@ -2,6 +2,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./CursoForm.css";
 
+// Misma lógica que en AuthContext para detectar la API URL
+const getApiUrl = () => {
+  // En producción, usar el dominio del backend
+  if (window.location.hostname === "frontend.r-c.lat") {
+    return "https://backend.r-c.lat";
+  }
+
+  // Para desarrollo local, usar la variable de entorno o localhost
+  return process.env.REACT_APP_API_URL || "http://localhost:3001";
+};
+
+const API_URL = getApiUrl();
+
 const CursoForm = ({ curso, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
     codigo: "",
@@ -48,11 +61,12 @@ const CursoForm = ({ curso, onSave, onCancel }) => {
 
     try {
       const url = curso
-        ? `${process.env.REACT_APP_API_URL}/cursos/${curso.id}`
-        : `${process.env.REACT_APP_API_URL}/cursos`;
+        ? `${API_URL}/api/cursos/${curso.id}`
+        : `${API_URL}/api/cursos`;
 
       const method = curso ? "put" : "post";
 
+      console.log(`🔄 ${method.toUpperCase()} ${url}`);
       const response = await axios[method](url, formData);
 
       if (response.data.success) {

@@ -2,6 +2,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./CursosList.css";
 
+// Misma lógica que en AuthContext para detectar la API URL
+const getApiUrl = () => {
+  // En producción, usar el dominio del backend
+  if (window.location.hostname === "frontend.r-c.lat") {
+    return "https://backend.r-c.lat";
+  }
+
+  // Para desarrollo local, usar la variable de entorno o localhost
+  return process.env.REACT_APP_API_URL || "http://localhost:3001";
+};
+
+const API_URL = getApiUrl();
+
 const CursosList = ({ onEdit, refreshTrigger }) => {
   const [cursos, setCursos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,9 +27,7 @@ const CursosList = ({ onEdit, refreshTrigger }) => {
   const fetchCursos = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/cursos`
-      );
+      const response = await axios.get(`${API_URL}/api/cursos`);
 
       if (response.data.success) {
         setCursos(response.data.data);
@@ -32,9 +43,7 @@ const CursosList = ({ onEdit, refreshTrigger }) => {
   const handleDelete = async (id, codigo) => {
     if (window.confirm(`¿Estás seguro de eliminar el curso ${codigo}?`)) {
       try {
-        const response = await axios.delete(
-          `${process.env.REACT_APP_API_URL}/cursos/${id}`
-        );
+        const response = await axios.delete(`${API_URL}/api/cursos/${id}`);
 
         if (response.data.success) {
           setCursos(cursos.filter((curso) => curso.id !== id));
