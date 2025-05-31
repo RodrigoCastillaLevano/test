@@ -15,10 +15,16 @@ const ADMIN_CREDENTIALS = {
  */
 router.post("/login", async (req, res) => {
   try {
+    console.log("=== LOGIN ATTEMPT ===");
+    console.log("Request body:", req.body);
+    console.log("Request headers origin:", req.headers.origin);
+    console.log("Expected credentials:", ADMIN_CREDENTIALS);
+    
     const { email, password } = req.body;
 
     // Validar campos requeridos
     if (!email || !password) {
+      console.log("Missing email or password");
       return res.status(400).json({
         success: false,
         message: "Email y contraseña son requeridos",
@@ -30,12 +36,17 @@ router.post("/login", async (req, res) => {
       email !== ADMIN_CREDENTIALS.email ||
       password !== ADMIN_CREDENTIALS.password
     ) {
+      console.log("Invalid credentials provided");
+      console.log("Provided:", { email, password });
+      console.log("Expected:", ADMIN_CREDENTIALS);
       return res.status(401).json({
         success: false,
         message: "Credenciales inválidas",
       });
     }
 
+    console.log("Credentials valid, generating token...");
+    
     // Generar token JWT
     const token = jwt.sign(
       {
@@ -46,6 +57,8 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET || "jwt_secret_2024_sistema_academico",
       { expiresIn: "24h" }
     );
+
+    console.log("Token generated successfully");
 
     res.json({
       success: true,
@@ -100,6 +113,35 @@ router.get("/verify", (req, res) => {
       message: "Token inválido o expirado",
     });
   }
+});
+
+/**
+ * GET /api/auth/test
+ * Endpoint de diagnóstico para verificar conectividad
+ */
+router.get("/test", (req, res) => {
+  res.json({
+    success: true,
+    message: "Conexión exitosa entre frontend y backend",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
+    credentials_configured: {
+      admin_email: ADMIN_CREDENTIALS.email,
+      admin_password_length: ADMIN_CREDENTIALS.password.length,
+    },
+    cors_info: {
+      origin: req.headers.origin || "No origin header",
+      user_agent: req.headers["user-agent"] || "No user agent",
+    },
+  });
+});
+
+/**
+ * OPTIONS /api/auth/login
+ * Manejar preflight CORS para login
+ */
+router.options("/login", (req, res) => {
+  res.status(200).end();
 });
 
 module.exports = router;

@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     const verifyToken = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/auth/verify`
+          `${process.env.REACT_APP_API_URL}/api/auth/verify`
         );
         if (response.data.success) {
           setUser(response.data.user);
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
+        `${process.env.REACT_APP_API_URL}/api/auth/login`,
         {
           email,
           password,
