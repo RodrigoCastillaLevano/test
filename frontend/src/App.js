@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
+import DiagnosticPanel from "./components/DiagnosticPanel";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import "./App.css";
 
@@ -21,6 +22,9 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="App">
+          {/* Panel de diagnóstico solo en desarrollo */}
+          {process.env.NODE_ENV === 'development' && <DiagnosticPanel />}
+          
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route

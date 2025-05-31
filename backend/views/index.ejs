@@ -2,10 +2,20 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div class="api-info">
+      <h1><%= title %></h1>
+      <p>API del Sistema de Gestión Académica</p>
+      <p>Estado: <strong>Funcionando</strong></p>
+      <p>Endpoints disponibles:</p>
+      <ul>
+        <li>POST /api/auth/login - Iniciar sesión</li>
+        <li>GET /api/auth/verify - Verificar token</li>
+        <li>GET /api/health - Estado del sistema</li>
+        <li>GET /api/cursos - Listar cursos</li>
+      </ul>
+    </div>
   </body>
 </html>
