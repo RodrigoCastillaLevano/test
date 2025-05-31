@@ -31,6 +31,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// Health check general
+app.get("/api/health", (req, res) => {
+  const uptime = process.uptime();
+  const uptimeString = `${Math.floor(uptime / 60)}m ${Math.floor(uptime % 60)}s`;
+
+  res.json({
+    status: "OK",
+    timestamp: new Date().toISOString(),
+    uptime: uptimeString,
+    environment: process.env.NODE_ENV || "development",
+    version: "1.0.0",
+  });
+});
+
 // Endpoint para verificar conexión de base de datos
 app.get("/api/health/database", async (req, res) => {
   try {
