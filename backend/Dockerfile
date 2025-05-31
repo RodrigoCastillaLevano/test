@@ -12,6 +12,9 @@ RUN npm ci --only=production
 # Copiar código fuente
 COPY . .
 
+# Definir variable de puerto
+ENV PORT=3001
+
 # Exponer puerto
 EXPOSE 3001
 
