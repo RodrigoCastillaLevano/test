@@ -1,6 +1,21 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
+// Configuración de la API URL con fallback robusto
+const getApiUrl = () => {
+  // En producción, usar el dominio del backend
+  if (window.location.hostname === 'frontend.r-c.lat') {
+    return 'https://backend.r-c.lat';
+  }
+  
+  // Para desarrollo local, usar la variable de entorno o localhost
+  return process.env.REACT_APP_API_URL || 'http://localhost:3001';
+};
+
+const API_URL = getApiUrl();
+
+console.log('🔗 API URL configurada:', API_URL);
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -21,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     const verifyToken = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/auth/verify`
+          `${API_URL}/api/auth/verify`
         );
         if (response.data.success) {
           setUser(response.data.user);
@@ -46,9 +61,10 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
+    console.log('🔐 Intentando login a:', `${API_URL}/api/auth/login`);
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/auth/login`,
+        `${API_URL}/api/auth/login`,
         {
           email,
           password,
